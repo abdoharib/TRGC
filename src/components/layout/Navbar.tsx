@@ -9,6 +9,7 @@ import { Menu, X } from 'lucide-react';
 import { useScrollEffect } from '../../hooks/useScrollEffect';
 import { NAV_LINKS } from '../../constants/navigation';
 import { SCROLL_THRESHOLD } from '../../constants/theme';
+import { getImageKitUrl } from '../../constants/portfolio';
 import type { NavbarProps } from '../../types/components';
 
 export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
@@ -25,14 +26,14 @@ export const Navbar: React.FC<NavbarProps> = ({ className = '' }) => {
                 <div className="flex items-center gap-3 relative">
                     {/* Logo when not scrolled (white version) */}
                     <img
-                        src="/assets/logo-white.png"
+                        src={getImageKitUrl('logo-white.png', 'logo')}
                         alt="الثابت للزخارف"
                         className={`h-12 md:h-14 w-auto transition-opacity duration-500 absolute ${isScrolled ? 'opacity-0' : 'opacity-100 brightness-0 invert'
                             }`}
                     />
                     {/* Logo when scrolled (color version) */}
                     <img
-                        src="/assets/logo-color.png"
+                        src={getImageKitUrl('logo-color.png', 'logo')}
                         alt="الثابت للزخارف"
                         className={`h-12 md:h-14 w-auto transition-opacity duration-500 ${isScrolled ? 'opacity-100' : 'opacity-0'
                             }`}

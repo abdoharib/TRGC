@@ -11,6 +11,7 @@ import {
   GRCSection,
   GoalsSection,
   ServicesSection,
+  PortfolioSection,
 } from './components/sections';
 
 /**
@@ -27,6 +28,7 @@ export function AlThabetLanding() {
         <GRCSection />
         <GoalsSection />
         <ServicesSection />
+        <PortfolioSection />
       </main>
       <Footer />
     </div>

@@ -35,7 +35,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ className = ''
                             className="flex gap-6 group"
                         >
                             <div className="flex-shrink-0">
-                                <span className="text-6xl font-black text-gray-100 group-hover:text-secondary/20 transition-colors duration-300">
+                                <span className="text-6xl font-black text-gray-200 group-hover:text-secondary transition-colors duration-300">
                                     {service.number}
                                 </span>
                             </div>

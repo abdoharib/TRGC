@@ -106,6 +106,28 @@ export interface Service {
   desc: string;
 }
 
+// ==================== Portfolio Section Types ====================
+
+export interface PortfolioSectionProps extends BaseComponentProps {
+  // Currently no additional props
+}
+
+export interface PortfolioItem {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  imagePath: string;
+}
+
+export interface ImageKitConfig {
+  urlEndpoint: string;
+  transformations: {
+    thumbnail: string;
+    fullsize: string;
+  };
+}
+
 // ==================== Footer Types ====================
 
 export interface FooterProps extends BaseComponentProps {

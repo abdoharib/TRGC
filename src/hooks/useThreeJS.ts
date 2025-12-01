@@ -106,27 +106,45 @@ export function useThreeJS(
       const { name, color, yPos, type = 'solid' } = layerConfig;
       
       let material: THREE.Material;
+      let originalOpacity: number;
+      let originalTransparent: boolean;
+      
       if (type === 'wireframe') {
+        originalOpacity = 0.8;
+        originalTransparent = true;
         material = new THREE.MeshBasicMaterial({
           color,
           wireframe: true,
           transparent: true,
-          opacity: 0.8
+          opacity: originalOpacity,
+          depthWrite: false // Important for transparency rendering
         });
       } else {
+        originalOpacity = type === 'glass' ? 0.7 : 1.0;
+        originalTransparent = type === 'glass';
         material = new THREE.MeshStandardMaterial({
           color,
           roughness: 0.4,
           metalness: 0.1,
           side: THREE.DoubleSide,
-          transparent: type === 'glass',
-          opacity: type === 'glass' ? 0.7 : 1.0
+          transparent: originalTransparent,
+          opacity: originalOpacity,
+          depthWrite: !originalTransparent // Disable depth write for transparent materials
         });
       }
 
       const mesh = new THREE.Mesh(baseGeometry, material);
       mesh.rotation.x = -Math.PI / 2;
-      mesh.userData = { originalY: 0, offsetFactor: yPos, id: name };
+      mesh.renderOrder = yPos; // Set render order based on layer position
+      // Store original material properties
+      mesh.userData = { 
+        originalY: 0, 
+        offsetFactor: yPos, 
+        id: name,
+        originalOpacity,
+        originalTransparent,
+        materialType: type
+      };
       meshLayers.push(mesh);
       layerGroup.add(mesh);
       return mesh;
@@ -138,6 +156,26 @@ export function useThreeJS(
     // Interaction
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
+
+    // Function to restore all layers to their original state
+    const restoreAllLayers = () => {
+      meshLayers.forEach(mesh => {
+        const { originalOpacity, originalTransparent } = mesh.userData;
+        
+        if (mesh.material instanceof THREE.MeshStandardMaterial) {
+          mesh.material.emissive.setHex(0x000000);
+          mesh.material.transparent = originalTransparent;
+          mesh.material.opacity = originalOpacity;
+          mesh.material.depthWrite = !originalTransparent;
+          mesh.material.needsUpdate = true;
+        } else if (mesh.material instanceof THREE.MeshBasicMaterial) {
+          mesh.material.transparent = originalTransparent;
+          mesh.material.opacity = originalOpacity;
+          mesh.material.depthWrite = false;
+          mesh.material.needsUpdate = true;
+        }
+      });
+    };
 
     const onMouseClick = (event: MouseEvent) => {
       if (!mountRef.current) return;
@@ -158,20 +196,41 @@ export function useThreeJS(
         const selectedMesh = intersectedObject;
         const layerId = selectedMesh.userData.id;
 
-        // Reset emissive (only for MeshStandardMaterial)
-        meshLayers.forEach(l => {
-          if (l.material instanceof THREE.MeshStandardMaterial) {
-            l.material.emissive.setHex(0x000000);
+        // Set transparency for all layers with higher opacity
+        meshLayers.forEach(mesh => {
+          if (mesh.material instanceof THREE.MeshStandardMaterial) {
+            mesh.material.emissive.setHex(0x000000);
+            mesh.material.transparent = true;
+            mesh.material.opacity = 0.5; // Higher opacity so layers are more visible
+            mesh.material.depthWrite = false; // Critical for proper transparency rendering
+            mesh.material.needsUpdate = true;
+          } else if (mesh.material instanceof THREE.MeshBasicMaterial) {
+            mesh.material.transparent = true;
+            mesh.material.opacity = 0.5;
+            mesh.material.depthWrite = false;
+            mesh.material.needsUpdate = true;
           }
         });
 
-        // Highlight (only for MeshStandardMaterial)
+        // Highlight and make selected layer fully opaque
         if (selectedMesh.material instanceof THREE.MeshStandardMaterial) {
           selectedMesh.material.emissive.setHex(0xE6B37C);
+          selectedMesh.material.opacity = 1.0;
+          selectedMesh.material.depthWrite = true; // Enable for selected layer
+          selectedMesh.material.needsUpdate = true;
+        } else if (selectedMesh.material instanceof THREE.MeshBasicMaterial) {
+          selectedMesh.material.opacity = 0.8;
+          selectedMesh.material.needsUpdate = true;
         }
 
         if (onLayerClick) {
           onLayerClick(layerId);
+        }
+      } else {
+        // Clicked on empty space - restore all layers
+        restoreAllLayers();
+        if (onLayerClick) {
+          onLayerClick('');
         }
       }
     };
