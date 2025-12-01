@@ -7,9 +7,10 @@ import { useEffect, useRef, RefObject } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import type { ThreeJSConfig, LayerConfig } from '../types/components';
+import { isMesh } from '../types/components';
 
 export interface UseThreeJSReturn {
-  layerGroupRef: RefObject<THREE.Group>;
+  layerGroupRef: RefObject<THREE.Group | null>;
 }
 
 /**
@@ -149,21 +150,24 @@ export function useThreeJS(
       const intersects = raycaster.intersectObjects(meshLayers);
 
       if (intersects.length > 0) {
-        const selectedMesh = intersects[0].object as THREE.Mesh;
+        const intersectedObject = intersects[0].object;
+        
+        // Use type guard for safe type narrowing
+        if (!isMesh(intersectedObject)) return;
+        
+        const selectedMesh = intersectedObject;
         const layerId = selectedMesh.userData.id;
 
-        // Reset emissive
+        // Reset emissive (only for MeshStandardMaterial)
         meshLayers.forEach(l => {
-          const mat = l.material as THREE.MeshStandardMaterial;
-          if (mat.emissive) {
-            mat.emissive.setHex(0x000000);
+          if (l.material instanceof THREE.MeshStandardMaterial) {
+            l.material.emissive.setHex(0x000000);
           }
         });
 
-        // Highlight
-        const mat = selectedMesh.material as THREE.MeshStandardMaterial;
-        if (mat.emissive) {
-          mat.emissive.setHex(0xE6B37C);
+        // Highlight (only for MeshStandardMaterial)
+        if (selectedMesh.material instanceof THREE.MeshStandardMaterial) {
+          selectedMesh.material.emissive.setHex(0xE6B37C);
         }
 
         if (onLayerClick) {

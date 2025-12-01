@@ -2,11 +2,11 @@
   "name": "al-thabet-landing-v2",
   "description": "Landing page for Al-Thabet Architectural Decoration company (V2)",
   "dependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "clsx": "^2.1.0",
     "framer-motion": "^11.0.0",
     "lucide-react": "^0.330.0",
-    "clsx": "^2.1.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "tailwind-merge": "^2.2.1",
     "three": "^0.160.0"
   },
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/three": "^0.181.0",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",

@@ -4,6 +4,7 @@
  */
 
 import { ReactNode } from 'react';
+import * as THREE from 'three';
 
 // ==================== Common Types ====================
 
@@ -49,6 +50,9 @@ export interface GRCSectionProps extends BaseComponentProps {
 export interface GRCExplorerProps extends BaseComponentProps {
   // Currently no additional props
 }
+
+// Re-export GRCLayerName for type safety
+export type { GRCLayerName } from '../constants/goals';
 
 export interface LayerMeshUserData {
   originalY: number;
@@ -134,4 +138,24 @@ export interface ThreeJSConfig {
 
 export interface ThreeJSScene {
   cleanup: () => void;
+}
+
+// ==================== Type Guard Utilities ====================
+
+/**
+ * Type guard to check if a THREE.Object3D is a THREE.Mesh
+ * @param object - The THREE.Object3D to check
+ * @returns True if the object is a THREE.Mesh
+ */
+export function isMesh(object: THREE.Object3D): object is THREE.Mesh {
+  return object instanceof THREE.Mesh;
+}
+
+/**
+ * Type guard to check if a string is a valid GRCLayerName
+ * @param value - The string to check
+ * @returns True if the value is a valid GRCLayerName
+ */
+export function isValidGRCLayerName(value: string): value is import('../constants/goals').GRCLayerName {
+  return ['finishing', 'filling', 'mesh', 'gfcr'].includes(value);
 }

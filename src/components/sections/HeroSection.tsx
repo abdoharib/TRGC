@@ -47,15 +47,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ className = '' }) => {
 
                 {/* Right Content (Text) */}
                 <motion.div
-                    className="lg:col-span-7 text-right order-2 lg:order-1 pt-20 lg:pt-0"
+                    className="lg:col-span-7 text-center lg:text-right order-2 lg:order-1 pt-12 md:pt-16 lg:pt-0"
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 1, ease: "easeOut" }}
                 >
-                    <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold text-white mb-8 leading-[1.1]">
-                        <span className="block overflow-hidden">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-8 leading-[1.1]">
+                        <span className="block overflow-hidden py-2">
                             <motion.span
-                                className="block"
+                                className="block text-5xl"
                                 initial={{ y: "100%" }}
                                 animate={{ y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.3, ease: ANIMATION.easing.smooth }}
@@ -63,9 +63,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ className = '' }) => {
                                 إبداع في
                             </motion.span>
                         </span>
-                        <span className="block overflow-hidden text-transparent bg-clip-text bg-gradient-to-r from-secondary via-[#F0CFA8] to-secondary">
+                        <span className="block overflow-hidden py-2 text-transparent bg-clip-text bg-gradient-to-r from-secondary via-[#F0CFA8] to-secondary">
                             <motion.span
-                                className="block py-2"
+                                className="block"
                                 initial={{ y: "100%" }}
                                 animate={{ y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.5, ease: ANIMATION.easing.smooth }}
@@ -76,7 +76,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ className = '' }) => {
                     </h1>
 
                     <motion.p
-                        className="text-xl text-gray-300 max-w-2xl mb-10 leading-relaxed font-light"
+                        className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto lg:mx-0 mb-6 md:mb-10 leading-relaxed font-light"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7 }}
@@ -85,20 +85,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ className = '' }) => {
                     </motion.p>
 
                     <motion.div
-                        className="flex flex-wrap gap-4"
+                        className="flex flex-wrap gap-3 md:gap-4 justify-center lg:justify-start"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.9 }}
                     >
-                        <a href="#projects" className="group relative px-8 py-4 bg-secondary text-white font-bold rounded-none overflow-hidden transition-all hover:shadow-[0_0_30px_rgba(230,179,124,0.4)]">
+                        <a href="#projects" className="group relative px-7 py-3.5 md:px-8 md:py-4 bg-secondary text-white text-base md:text-base font-bold rounded-none overflow-hidden transition-all hover:shadow-[0_0_30px_rgba(230,179,124,0.4)]">
                             <div className="absolute inset-0 w-0 bg-white transition-all duration-[250ms] ease-out group-hover:w-full opacity-20"></div>
                             <span className="relative flex items-center gap-2">
                                 اطلب استشارة مجانية
-                                <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                                <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                             </span>
                         </a>
-                        <a href="#about" className="px-8 py-4 border border-white/20 text-white font-bold hover:bg-white/5 transition-all flex items-center gap-2">
-                            <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs">
+                        <a href="#about" className="px-7 py-3.5 md:px-8 md:py-4 border border-white/20 text-white text-base md:text-base font-bold hover:bg-white/5 transition-all flex items-center gap-2">
+                            <span className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/10 flex items-center justify-center text-xs">
                                 <Clock size={14} />
                             </span>
                             تعرف علينا
